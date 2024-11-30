@@ -1,0 +1,47 @@
+<html>
+<body>
+Reports invalid method references in jda-commands, which are often referenced using String literals.
+<p>
+    Example:
+</p>
+<pre><code>
+@Interaction
+public class DynamicOptionTest {
+
+    @SlashCommand("button test")
+    public void onCommand(CommandEvent event) {
+        // marked as an error, because the correct reference would be "onButton"
+        event.withSelectMenus("onClick").reply("Click me");
+    }
+
+    @Button("Click me")
+    public void onButton(ComponentEvent event) {
+        event.reply("You clicked me!");
+    }
+
+}
+</code></pre>
+
+<p>
+    Quick fix options allow you to generate the missing code:
+</p>
+<pre><code>
+@Interaction
+public class DynamicOptionTest {
+
+    @SlashCommand("button test")
+    public void onCommand(CommandEvent event) {
+        // marked as an error, because the correct reference would be "onButton"
+        event.withSelectMenus("onClick").reply("Click me");
+    }
+
+    @SlashCommand()
+    public void onClick(ComponentEvent event) {
+
+    }
+
+}
+</code></pre>
+
+</body>
+</html>

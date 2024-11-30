@@ -1,0 +1,22 @@
+<idea-plugin>
+    <id>com.github.kaktushose.jda-commands-inspection</id>
+
+    <name>JDA-Commands Inspection</name>
+
+    <vendor email="42280757+Kaktushose@users.noreply.github.com" url="https://github.com/Kaktushose">Kaktushose</vendor>
+
+    <description><![CDATA[
+    This plugin runs code inspection for the JDA interaction framework <a href= "https://github.com/Kaktushose/jda-commands">jda-commands</a>.<br>
+    It validates method references, which are commonly used in jda-commands.
+  ]]></description>
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+    <extensions defaultExtensionNs="com.intellij">
+        <localInspection language="JAVA"
+                         implementationClass="com.github.kaktushose.jda.commands.inspection.MethodReferenceInspection"
+                         groupName="JDA-Commands"
+                         enabledByDefault="true"
+                         level="ERROR">
+        </localInspection>
+    </extensions>
+</idea-plugin>
