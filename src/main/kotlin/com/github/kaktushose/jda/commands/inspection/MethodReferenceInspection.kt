@@ -39,15 +39,19 @@ class MethodReferenceInspection : AbstractBaseJavaLocalInspectionTool() {
 
                 if (parentAnnotation != null) {
                     if (parentAnnotation.qualifiedName == DynamicOptions::class.qualifiedName) {
-                        checkMethodExists(
-                            value,
-                            expression,
-                            manager,
-                            isOnTheFly,
-                            problems,
-                            "DynamicOptionResolver",
-                            CreateDynamicOptionResolverQuickFix(value)
-                        )
+                        if (value.isBlank()) {
+                            createEmptyNameWarning(expression, manager, problems, isOnTheFly)
+                        } else {
+                            checkMethodExists(
+                                value,
+                                expression,
+                                manager,
+                                isOnTheFly,
+                                problems,
+                                "DynamicOptionResolver",
+                                CreateDynamicOptionResolverQuickFix(value)
+                            )
+                        }
                     }
                 }
 
@@ -61,16 +65,21 @@ class MethodReferenceInspection : AbstractBaseJavaLocalInspectionTool() {
                 if (selectMethods.contains(parentMethodCall.methodExpression.qualifiedName) ||
                     parentMethodCall.methodExpression.referenceName == Replyable::withSelectMenus.name
                 ) {
-                    checkMethodExists(
-                        value,
-                        expression,
-                        manager,
-                        isOnTheFly,
-                        problems,
-                        "SelectMenu",
-                        CreateStringMenuQuickFix(value),
-                        CreateEntityMenuQuickFix(value)
-                    )
+                    if (value.isBlank()) {
+                        createEmptyNameWarning(expression, manager, problems, isOnTheFly)
+                    } else {
+                        checkMethodExists(
+                            value,
+                            expression,
+                            manager,
+                            isOnTheFly,
+                            problems,
+                            "SelectMenu",
+                            CreateStringMenuQuickFix(value),
+                            CreateEntityMenuQuickFix(value)
+                        )
+                    }
+
                 }
                 val buttonMethods = listOf(
                     Buttons::class.simpleName + "." + Buttons::enabled.name,
@@ -79,14 +88,23 @@ class MethodReferenceInspection : AbstractBaseJavaLocalInspectionTool() {
                 if (buttonMethods.contains(parentMethodCall.methodExpression.qualifiedName) ||
                     parentMethodCall.methodExpression.referenceName == Replyable::withButtons.name
                 ) {
-                    checkMethodExists(
-                        value, expression, manager, isOnTheFly, problems, "Button", CreateButtonQuickFix(value)
-                    )
+                    if (value.isBlank()) {
+                        createEmptyNameWarning(expression, manager, problems, isOnTheFly)
+                    } else {
+                        checkMethodExists(
+                            value, expression, manager, isOnTheFly, problems, "Button", CreateButtonQuickFix(value)
+                        )
+                    }
+
                 }
                 if (parentMethodCall.methodExpression.referenceName == ModalReplyable::replyModal.name) {
-                    checkMethodExists(
-                        value, expression, manager, isOnTheFly, problems, "Modal", CreateModalQuickFix(value)
-                    )
+                    if (value.isBlank()) {
+                        createEmptyNameWarning(expression, manager, problems, isOnTheFly)
+                    } else {
+                        checkMethodExists(
+                            value, expression, manager, isOnTheFly, problems, "Modal", CreateModalQuickFix(value)
+                        )
+                    }
                 }
             }
 
@@ -95,9 +113,22 @@ class MethodReferenceInspection : AbstractBaseJavaLocalInspectionTool() {
         return problems.toTypedArray()
     }
 
-    fun getParentClassName(methodCallExpression: PsiMethodCallExpression): String? {
-        val containingClass: PsiClass? = PsiTreeUtil.getParentOfType(methodCallExpression, PsiClass::class.java)
-        return containingClass?.name
+    private fun createEmptyNameWarning(
+        expression: PsiLiteralExpression,
+        manager: InspectionManager,
+        problems: MutableList<ProblemDescriptor>,
+        isOnTheFly: Boolean
+    ) {
+        problems.add(
+            manager.createProblemDescriptor(
+                expression,
+                "Missing method reference",
+                null,
+                ProblemHighlightType.WEAK_WARNING,
+                isOnTheFly,
+                false
+            )
+        )
     }
 
     private fun checkMethodExists(
