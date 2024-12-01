@@ -1,5 +1,5 @@
 [![Generic badge](https://img.shields.io/badge/Version-1.0.0-green.svg)](https://github.com/Kaktushose/jda-commands-inspection/releases/latest)
-[![Generic badge](https://img.shields.io/badge/Marketplace-Install-green.svg)](https://plugins.jetbrains.com/embeddable/install/25977)
+[![Generic badge](https://img.shields.io/badge/Marketplace-Install-green.svg)](https://plugins.jetbrains.com/plugin/25977-jda-commands-inspection)
 [![Generic badge](https://img.shields.io/badge/Github--Release-Download-green.svg)](https://plugins.jetbrains.com/embeddable/install/25977)
 [![license-shield](https://img.shields.io/badge/License-Apache%202.0-lightgrey.svg)]()
 # JDA-Commands Inspection Plugin
