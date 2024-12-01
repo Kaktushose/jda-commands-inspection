@@ -11,7 +11,7 @@ public class DynamicOptionTest {
     @SlashCommand("button test")
     public void onCommand(CommandEvent event) {
         // marked as an error, because the correct reference would be "onButton"
-        event.withSelectMenus("onClick").reply("Click me");
+        event.withButtons("onClick").reply("Click me");
     }
 
     @Button("Click me")
@@ -31,11 +31,10 @@ public class DynamicOptionTest {
 
     @SlashCommand("button test")
     public void onCommand(CommandEvent event) {
-        // marked as an error, because the correct reference would be "onButton"
         event.withSelectMenus("onClick").reply("Click me");
     }
 
-    @SlashCommand()
+    @Button()
     public void onClick(ComponentEvent event) {
 
     }
